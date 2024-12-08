@@ -82,9 +82,6 @@ jobs:
             --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/release/${{ steps.get-channel-release-sequence.outputs.channel-release-sequence }}/airgap/build \
             --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
             --header 'accept: application/json'
-            - name: Sleep for 60 seconds
-            run: sleep 60s
-            shell: bash
           
       - name: check airgap build success
         run: |
