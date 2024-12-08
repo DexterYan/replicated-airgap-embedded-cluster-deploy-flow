@@ -63,6 +63,6 @@ jobs:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           app-slug: ${{ env.APP_SLUG }}
           yaml-dir: ./helm/manifests
-          promote-channel: 2S2KBY8Pm5qbTGYya5Pj5ZfPh2z
+          promote-channel: Replibot
           version: ${{ github.event.inputs.version }}
       
