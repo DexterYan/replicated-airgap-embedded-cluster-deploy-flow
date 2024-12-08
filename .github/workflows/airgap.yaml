@@ -45,7 +45,7 @@ jobs:
       
       - name: check airgap build success
         run: |
-          max_retries=5
+          max_retries=10
           attempt=0
 
           while true; do
@@ -62,6 +62,9 @@ jobs:
             elif [ "$status" == "failed" ]; then
               echo "Airgap build has failed. Exiting with error."
               exit 1
+            elif [ "$status" == "building" ]; then
+              echo "Airgap build is still in progress. Waiting for 60 seconds..."
+              sleep 60
             fi
 
             attempt=$((attempt + 1))
@@ -69,7 +72,4 @@ jobs:
               echo "Maximum retries reached. Exiting with error."
               exit 1
             fi
-
-            echo "Airgap build not yet complete. Attempt $attempt/$max_retries. Waiting for 30 seconds..."
-            sleep 30
           done
