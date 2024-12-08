@@ -9,7 +9,7 @@ on:
 
 env:
   chart_name: replibot
-  app_id: 
+  app_id: 2S2KBYYp3fKkP42pb3eJYIYJNYv
         
 
 jobs:
@@ -27,13 +27,13 @@ jobs:
         id: get-channel-release-sequence
         run: |
           curl --request GET \
-            --url https://api.replicated.com/vendor/v3/app/${{ secrets.REPLICATED_APP_ID }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/releases \
+            --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/releases \
             --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
             --header 'accept: application/json'
     
       - name: build airgap
         run: |
           curl --request POST \
-            --url https://api.replicated.com/vendor/v3/app/${{ secrets.REPLICATED_APP_ID }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/release/${{ steps.get-channel-release-sequence.outputs.channel-release-sequence }}/airgap/build \
+            --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/release/${{ steps.get-channel-release-sequence.outputs.channel-release-sequence }}/airgap/build \
             --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
             --header 'accept: application/json'
