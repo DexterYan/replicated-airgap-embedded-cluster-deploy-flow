@@ -29,7 +29,9 @@ jobs:
           curl --request GET \
             --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/2pusnQ3dbpDq0SEVEE8LCeUCCwC/releases \
             --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
-            --header 'accept: application/json'
+            --header 'accept: application/json' | jq -r '.releases[0].channelSequence' > channel-release-sequence.txt
+          cat channel-release-sequence.txt
+          echo "channel-release-sequence=$(cat channel-release-sequence.txt)" >> $GITHUB_OUTPUT
     
       - name: build airgap
         run: |
