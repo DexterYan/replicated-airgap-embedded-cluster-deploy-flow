@@ -39,7 +39,7 @@ jobs:
           context: ./api
           file: ./api/Dockerfile
           push: true
-          tags: replibot-testing:${{ github.event.inputs.version }}
+          tags: dexteryanreplicated/replibot-testing:${{ github.event.inputs.version }}
       
 
 
