@@ -6,7 +6,7 @@ spec:
   # chart identifies a matching chart from a .tgz
   chart:
     name: echo-server
-    chartVersion: 0.6.0
+    chartVersion: 0.5.0
        
 
   # builder values provide a way to render the chart with all images
