@@ -30,7 +30,7 @@ jobs:
         run: helm package helm/${{ env.chart_name }} -d helm/manifests
       
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: helm-package
           path: helm/manifests
