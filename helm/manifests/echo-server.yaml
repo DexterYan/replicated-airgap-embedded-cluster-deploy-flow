@@ -1,0 +1,15 @@
+apiVersion: kots.io/v1beta2
+kind: HelmChart
+metadata:
+  name: echo-server
+spec:
+  # chart identifies a matching chart from a .tgz
+  chart:
+    name: echo-server
+    chartVersion: 0.6.0
+       
+
+  # builder values provide a way to render the chart with all images
+  # and manifests. this is used in replicated to create airgap packages
+
+  builder: {}

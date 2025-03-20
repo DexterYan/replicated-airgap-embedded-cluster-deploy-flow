@@ -1,12 +1,12 @@
   apiVersion: kots.io/v1beta1
   kind: Config
   metadata:
-    name: replibot-config
+    name: echo-server-config
   spec:
     groups:
-      - name: replibot
-        title: replibot
-        description: replibot Configuration
+      - name: echo-server
+        title: echo-server
+        description: echo-server Configuration
         items:
           - name: admin_user
             title: Admin User
