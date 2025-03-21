@@ -38,66 +38,16 @@ jobs:
   
       - name: create-release
         id: create-release
-        uses: replicatedhq/replicated-actions/create-release@v1
+        uses: replicatedhq/replicated-actions/create-cluster@dx/sc-120959/update-create-release
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           app-slug: ${{ env.APP_SLUG }}
           yaml-dir: ./helm/manifests
           promote-channel: echo
           version: ${{ github.event.inputs.version }}
+          wait-for-airgap-build: true
 
-      - name: Get Release Channel ID
-        id: get-release-channel-id
+      - name: echo airgap build status
         run: |
-          curl --request GET \
-            --url 'https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channels?channelName=${{ env.channel_name }}' \
-            --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
-            --header 'accept: application/json' | jq -r '.channels[0].id' > release-channel-id.txt
-          echo "release-channel-id=$(cat release-channel-id.txt)" >> $GITHUB_OUTPUT
-
-      - name: Get Channel Release Sequence
-        id: get-channel-release-sequence
-        run: |
-          curl --request GET \
-            --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/${{ steps.get-release-channel-id.outputs.release-channel-id }}/releases \
-            --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
-            --header 'accept: application/json' | jq -r '.releases[0].channelSequence' > channel-release-sequence.txt
-          echo "channel-release-sequence=$(cat channel-release-sequence.txt)" >> $GITHUB_OUTPUT
-
-      - name: build airgap
-        run: |
-          curl --request POST \
-            --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/${{ steps.get-release-channel-id.outputs.release-channel-id }}/release/${{ steps.get-channel-release-sequence.outputs.channel-release-sequence }}/airgap/build \
-            --header 'Authorization: ${{ secrets.REPLICATED_API_TOKEN }}' \
-            --header 'accept: application/json'
-          
-      - name: check airgap build success
-        run: |
-          max_retries=10
-          attempt=0
-
-          while true; do
-            status=$(curl --silent --request GET \
-              --url https://api.replicated.com/vendor/v3/app/${{ env.app_id }}/channel/${{ steps.get-release-channel-id.outputs.release-channel-id }}/releases \
-              --header "Authorization: ${{ secrets.REPLICATED_API_TOKEN }}" \
-              --header "accept: application/json" | jq -r '.releases[0].airgapBuildStatus')
-
-            echo "Current airgapBuildStatus: $status"
-
-            if [ "$status" == "built" ]; then
-              echo "Airgap build is complete!"
-              break
-            elif [ "$status" == "failed" ]; then
-              echo "Airgap build has failed. Exiting with error."
-              exit 1
-            elif [ "$status" == "building" ]; then
-              echo "Airgap build is still in progress. Waiting for 60 seconds..."
-              sleep 60
-            fi
-
-            attempt=$((attempt + 1))
-            if [ "$attempt" -ge "$max_retries" ]; then
-              echo "Maximum retries reached. Exiting with error."
-              exit 1
-            fi
-          done
+          echo "airgap build status: ${{ steps.create-release.outputs.airgap-build-status }}"
+          echo "airgap url: ${{ steps.create-release.outputs.airgap-url }}"
