@@ -49,5 +49,5 @@ jobs:
 
       - name: echo airgap build status
         run: |
-          echo "airgap build status: ${{ steps.create-release.outputs.airgap-build-status }}"
+          echo "airgap build status: ${{ steps.create-release.outputs.airgap-status }}"
           echo "airgap url: ${{ steps.create-release.outputs.airgap-url }}"
