@@ -38,7 +38,7 @@ jobs:
   
       - name: create-release
         id: create-release
-        uses: replicatedhq/replicated-actions/create-cluster@dx/sc-120959/update-create-release
+        uses: replicatedhq/replicated-actions/create-release@dx/sc-120959/update-create-release
         with:
           api-token: ${{ secrets.REPLICATED_API_TOKEN }}
           app-slug: ${{ env.APP_SLUG }}
